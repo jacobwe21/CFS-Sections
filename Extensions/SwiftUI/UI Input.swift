@@ -134,11 +134,6 @@ public struct CircleButton: View {
 	public var body: some View {
 		#if os(iOS)
 		Button(role: buttonMode.buttonRole) {
-			if buttonMode == .highAccent {
-				MyHaptics.singleHaptic(intensity: .medium)
-			} else if buttonMode == .destructive {
-				MyHaptics.singleHaptic(intensity: .heavy)
-			}
 			buttonAction()
 		} label: {
 			VStack {

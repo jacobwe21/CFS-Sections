@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Spatial
 
 struct SSectionView: View {
 	@Environment(\.colorTheme) var colorTheme
@@ -55,12 +56,25 @@ struct SSectionView: View {
 	}
 	@State private var sectionShearCenter: SIMD2<Double> =  SIMD2<Double>(x:0,y:0)
 	
+	var angleX: Angle {
+		return Angle(-section.theta)
+	}
+	var angleY: Angle {
+		return Angle(-section.theta + Angle2D(degrees: 90))
+	}
+	
 	var body: some View {
 		GeometryReader { geo in
 			// X-Y Axis Arrows
 			ZStack {
 				PositionedArrowView(PositionedArrow(from: CGVector(distance: 30, theta: .degrees(90)), anchorVector: CGVector(dx: 15-geo.size.width/2, dy: 15-geo.size.height/2), anchoredAtHead: false, arrowWidth: 3, arrowheadLength: 8), color: Color.primary, fillColor: Color.clear, strokeStyle: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round), label: Text("Y"))
 				PositionedArrowView(PositionedArrow(from: CGVector(distance: 30, theta: .degrees(0)), anchorVector: CGVector(dx: 15-geo.size.width/2, dy: 15-geo.size.height/2), anchoredAtHead: false, arrowWidth: 3, arrowheadLength: 8), color: Color.primary, fillColor: Color.clear, strokeStyle: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round), label: Text("X"))
+			}
+			
+			// X-Y Rotated Axis
+			ZStack {
+				SlantedLine(angle: angleX, lineWidth: 1, lineCap: .square, dash: [10, 8])
+				SlantedLine(angle: angleY, lineWidth: 1, lineCap: .square, dash: [10, 8])
 			}
 			
 			// Straight Elements
